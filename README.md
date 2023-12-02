@@ -2,4 +2,4 @@
 
 Домашнее задание 4.3.1
 ## бейдж, который автоматически отражает результат последней сборки:
-https://github.com/valemisem/gh-actions-postman/actions/runs/7072242123
+[![Build Status] https://github.com/valemisem/gh-actions-postman/blob/main/.github/workflows/blank.yml
