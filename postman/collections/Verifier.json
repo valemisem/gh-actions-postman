@@ -1,0 +1,1424 @@
+{
+	"info": {
+		"_postman_id": "46e1b760-df34-44ef-b5cb-6f52d3d46681",
+		"name": "Verifier",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "31280100-46e1b760-df34-44ef-b5cb-6f52d3d46681"
+	},
+	"item": [
+		{
+			"name": "Testing Tasks",
+			"item": [
+				{
+					"name": "tasks",
+					"item": [
+						{
+							"name": "Get all tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4c40e44d-3182-49f1-9f4d-a2f69b809fed",
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json()\r",
+											"pm.environment.set(\"taskId\", response[4].id);\r",
+											"\r",
+											"pm.test(\"Test data type of the response\", () => {\r",
+											"    for (var i = 0; i < response.length; i++ ){\r",
+											"  pm.expect(response[i].id).to.be.an(\"number\");\r",
+											"  pm.expect(response[i].title).to.be.a(\"string\");\r",
+											"  pm.expect(response[i].answer).to.be.a(\"string\");\r",
+											"  pm.expect(response[i].text).to.be.a(\"string\");\r",
+											"}})\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "79165cfe-ec8d-47dc-a8f0-486e85c8a10e",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bfcb4c40-03e3-48cc-b30b-2597c60ebb79",
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"let response = pm.response.json(),\r",
+											"taskData = JSON.stringify(response);\r",
+											"pm.environment.set(\"taskData\", taskData);\r",
+											"\r",
+											"pm.test(\"The answer is a string\", () => {\r",
+											"    const responseJson = pm.response.json();\r",
+											"    pm.expect(responseJson.answer).to.be.a('string');\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "a5457d13-a06e-4290-b422-26d967c2ff9b",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"tasks",
+										"{{taskId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change the whole task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a92526a0-b40e-4f70-b3b4-6563e09c93f4",
+										"exec": [
+											"pm.test(\"Status code is 204\", () => {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "0bf0d4e7-9e7f-4689-bdee-0362e856ddfc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \r\n  \"text\": \"stfding\",\r\n  \"answer\": \"hng\",\r\n  \"title\": \"1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/tasks/?id={{taskId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"tasks",
+										""
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{taskId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change some data in a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2fe5dfae-e030-43b6-a479-79edd5ac7ef4",
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "6e5ec5d7-e063-47d6-a3a1-524753fd4f1a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \r\n  \"text\": \"stfding\",\r\n  \"answer\": \"hng\",\r\n  \"title\": \"1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/tasks/?id={{taskId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"tasks",
+										""
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{taskId}}",
+											"type": "text"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ed354316-0141-42f6-a22f-7eb8a2b3872a",
+										"exec": [
+											"pm.test(\"Status code is 201\", () => {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"let response = pm.response.json(),\r",
+											"randomTask = JSON.stringify(response);\r",
+											"pm.environment.set(\"randomTask\", randomTask);\r",
+											"let randomTaskId = response.id\r",
+											"pm.environment.set(\"randomTaskId\", randomTaskId);\r",
+											"\r",
+											"const jsonData = pm.response.json();\r",
+											"pm.test(\"Test data type of the response\", () => {\r",
+											"  pm.expect(jsonData).to.be.an(\"object\");\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "dfa7b31c-63f7-49f4-9640-dacd6126a5cc",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"text\": \"{{textTest}}\",\r\n  \"answer\": \"{{answerTest}}\",\r\n  \"title\": \"{{titleTest}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "cff10a93-b83c-4bb1-a7d4-f2de7ef57cce",
+										"exec": [
+											"pm.test(\"Status code is 204\", () => {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "75d8c0dc-a9d9-4f18-ad03-69e5d9c3ce49",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/tasks/{{randomTaskId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"tasks",
+										"{{randomTaskId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new task Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9cae24c6-64eb-41df-89f9-1c7353f57007",
+										"exec": [
+											"pm.test(\"Status code is 201\", () => {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"let response = pm.response.json(),\r",
+											"randomTask = JSON.stringify(response);\r",
+											"pm.environment.set(\"randomTask\", randomTask);\r",
+											"let randomTaskId = response.id\r",
+											"pm.environment.set(\"randomTaskId\", randomTaskId);\r",
+											"\r",
+											"const jsonData = pm.response.json();\r",
+											"pm.test(\"Test data type of the response\", () => {\r",
+											"  pm.expect(jsonData).to.be.an(\"object\");\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "e48416cf-2014-4b18-9605-5fb5fee1cac5",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"text\": \"{{$randomCatchPhrase}}\",\r\n  \"answer\": \"{{$randomBoolean}}\",\r\n  \"title\": \"{{$randomCity}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "32d82ad1-fa6e-4c5a-b059-cb47fa449db1"
+				},
+				{
+					"name": "user-tasks",
+					"item": [
+						{
+							"name": "Get all users-tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c6f0ac78-f101-4637-acee-0bda1a3bbe51",
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json()\r",
+											"pm.environment.set(\"task-user-Id\", response[1].id);\r",
+											"\r",
+											"pm.test(\"Test data type of the response\", () => {\r",
+											"    for (var i = 0; i < response.length; i++ ){\r",
+											"  pm.expect(response[i].id).to.be.an(\"number\");\r",
+											"  pm.expect(response[i].isSolved).to.be.a(\"boolean\");\r",
+											"  pm.expect(response[i].taskTitle).to.be.a(\"string\");\r",
+											"  pm.expect(response[i].username).to.be.a(\"string\");\r",
+											"}})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "fd24dfae-e562-4810-beb4-b528c2b162ad",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/user-tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"user-tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get a task for a user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "dda0ff0d-35ef-4d11-a110-04480c213926",
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json()\r",
+											"pm.test(\"Test data type of the response\", () => {\r",
+											"  pm.expect(response.id).to.be.an(\"number\");\r",
+											"  pm.expect(response.isSolved).to.be.a(\"boolean\");\r",
+											"  pm.expect(response.user).to.be.a(\"string\");\r",
+											"  pm.expect(response.task).to.be.a(\"string\");\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "495c50f2-e607-4e75-8dd5-5da965e581ea",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/user-tasks/{{task-user-Id}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"user-tasks",
+										"{{task-user-Id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change data in a task for a user Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "62323fb7-47bd-4b21-a033-e1266cf086f6",
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "85479fde-cf14-4fc7-b616-ae54355423d6",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n    \"isSolved\": true,\r\n    \"user\": {\r\n        \"id\": 1089,\r\n        \"login\": \"Christop.Keebler54\",\r\n        \"firstName\": \"Paula\",\r\n        \"lastName\": \"Muller\",\r\n        \"email\": \"Emile82@hotmail.com\",\r\n        \"activated\": true,\r\n        \"langKey\": \"en\",\r\n        \"imageUrl\": \"string\",\r\n        \"resetDate\": \"2023-11-29T01:10:30.602Z\"\r\n    },\r\n    \"task\": {{randomTask}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/user-tasks?id=1153",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"user-tasks"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1153"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change some data in a task for a user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d4144782-711e-4efd-be8d-527d61434837",
+										"exec": [
+											"pm.test(\"Status code is 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "a8857382-04b1-44fb-a2cf-2210e68a223a",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n    \"isSolved\": true,\r\n    \"user\": {\r\n        \"id\": 1089,\r\n        \"login\": \"Christop.Keebler54\",\r\n        \"firstName\": \"Paula\",\r\n        \"lastName\": \"Muller\",\r\n        \"email\": \"Emile82@hotmail.com\",\r\n        \"activated\": true,\r\n        \"langKey\": \"en\",\r\n        \"imageUrl\": \"string\",\r\n        \"resetDate\": \"2023-11-29T01:10:30.602Z\"\r\n    },\r\n    \"task\": {{taskData}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/user-tasks/?id=1153",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"user-tasks",
+										""
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1153"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign a task for a user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4bb4d769-46fc-4855-87aa-9c737085446b",
+										"exec": [
+											"pm.test(\"Status code is 201\", () => {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json()\r",
+											"pm.test(\"Test data type of the response\", () => {\r",
+											"  pm.expect(response.id).to.be.an(\"number\");\r",
+											"  pm.expect(response.isSolved).to.be.a(\"boolean\");\r",
+											"  pm.expect(response.user).to.be.a(\"object\");\r",
+											"})\r",
+											"\r",
+											"var jsonReq = JSON.parse(responseBody)\r",
+											"pm.test(\"Validate login\", function () {\r",
+											"    pm.expect(jsonReq.user.login).to.eql(\"christop.keebler54\")\r",
+											"})\r",
+											"\r",
+											"let randomUserTaskId = response.id\r",
+											"pm.environment.set(\"randomUserTaskId\", randomUserTaskId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "e73101d6-a1ea-44d4-a106-c7a3db5c6939",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"isSolved\": true,\r\n    \"user\": {\r\n        \"id\": 1089,\r\n        \"login\": \"Christop.Keebler54\",\r\n        \"firstName\": \"Paula\",\r\n        \"lastName\": \"Muller\",\r\n        \"email\": \"Emile82@hotmail.com\",\r\n        \"activated\": true,\r\n        \"langKey\": \"en\",\r\n        \"imageUrl\": \"string\",\r\n        \"resetDate\": \"2023-11-29T01:10:30.602Z\"\r\n    },\r\n    \"task\": {{randomTask}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/user-tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"user-tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a task for a user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e4dab127-495b-40ee-bbb9-fe54a12b6c5d",
+										"exec": [
+											"pm.test(\"Status code is 204\", () => {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"id": "9a6c85d6-95d1-4277-b30b-14fe0e3a5b4f",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/user-tasks/{{randomUserTaskId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"user-tasks",
+										"{{randomUserTaskId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"id": "6da5af25-fc2e-4d21-a79c-e42d8a63da9d"
+				}
+			],
+			"id": "6cfdc449-4f72-40fb-befa-53800f4c15a1"
+		},
+		{
+			"name": "user and account",
+			"item": [
+				{
+					"name": "status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "58c3c17a-5ac5-4232-814b-20157b76a2d3",
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "a9826d42-7813-499f-988f-78f1f39c1e9c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{websiteUrl}}",
+							"host": [
+								"{{websiteUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authentication ADMIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "25f2b906-2f51-465f-85fe-997eefa31ea2",
+								"exec": [
+									"const response = pm.response.json()\r",
+									"pm.environment.set(\"adminToken\", response.id_token);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var jsonReq = JSON.parse(request.data)\r",
+									"pm.test(\"Validate username\", function () {\r",
+									"    pm.expect(jsonReq.username).to.eql(\"admin\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Validate password\", function () {\r",
+									"    pm.expect(jsonReq.password).to.eql(\"admin\")\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "1b70b230-1253-49b3-9007-717fd72d1640",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin\",\r\n  \"rememberMe\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/authenticate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e813407-4cb7-494a-880c-9142f17947e8",
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"pm.collectionVariables.set(\"passwordTest\", \"admin\");\r",
+									"pm.collectionVariables.get(\"passwordTest\");\r",
+									"\r",
+									"var jsonReq = JSON.parse(request.data)\r",
+									"pm.test(\"Validate authorities\", function () {\r",
+									"    pm.expect(jsonReq.authorities).to.eql([\r",
+									"    \"ROLE_USER_ADMIN\"])\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "deb2559c-3861-4ad0-9a4d-08d3f4f322df",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n  \"id\": 0,\r\n  \"login\": \"{{$randomUserName}}\",\r\n  \"firstName\": \"{{$randomFirstName}}\",\r\n  \"lastName\": \"{{$randomLastName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"imageUrl\": \"string\",\r\n  \"activated\": true,\r\n  \"langKey\": \"en\",\r\n  \"createdBy\": \"string\",\r\n  \"createdDate\": \"2023-11-24T17:19:36.733Z\",\r\n  \"lastModifiedBy\": \"string\",\r\n  \"lastModifiedDate\": \"2023-11-24T17:19:36.733Z\",\r\n  \"authorities\": [\r\n    \"ROLE_USER_ADMIN\"\r\n  ],\r\n  \"password\": \"{{$randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get data of a specific account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "52bd4ac6-03bd-4427-8872-2ecfbc900f1b",
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the account is activated\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.activated).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The account properties of login are correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.login).to.be.a('string')\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "62e8d394-b95f-4e4b-bf29-79ce397ffb7f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/users/{{userLogin}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"{{userLogin}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a6c4a815-88c5-455b-b6df-d0aca3edd2b4",
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var jsonReq = JSON.parse(request.data)\r",
+									"pm.test(\"Validate password\", function () {\r",
+									"    pm.expect(jsonReq.newPassword).to.eql(\"admin\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check the active environment\", () => {\r",
+									"  pm.expect(pm.environment.name).to.eql(\"Verifier\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "8255b835-c25e-410d-819a-6f833d57c943",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n  \"currentPassword\": \"{{passwordTest}}\",\r\n  \"newPassword\": \"{{passwordTest}}\"\r\n} \r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/account/change-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a7fdbebc-c97f-4f56-b8b1-d4af98987f09",
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "3db78c22-24e3-4049-99fb-33c0ca090d3a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "valentinamivl@gmail.com\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/account/reset-password/init",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"reset-password",
+								"init"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "56c9ad02-9c7a-41cd-a108-9cae7144bf72",
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody)\r",
+									"pm.environment.set(\"userLogin\", jsonData.login)\r",
+									"\r",
+									"pm.test(\"Person is Juston\", () => {\r",
+									"  const responseJson = pm.response.json();\r",
+									"  pm.expect(responseJson.firstName).to.eql(\"Juston\")\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Email of Juston is correct\", () => {\r",
+									"  const responseJson = pm.response.json();\r",
+									"  pm.expect(responseJson.email).to.eql(\"thad92@hotmail.com\")\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "4ffa265e-17ba-412d-b664-40a4a1564b70",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1073,\r\n {{user1073}}\r\n  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c24a2641-6308-420e-afcf-3ec9f2e61d3a",
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "74e7b846-03d9-4ff4-87cd-eb5988bcbfac",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "5591653c-59c1-405d-a70c-5a0994ad7af7"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5592061e-92fa-4804-8e5c-dc0baacbf090",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "392a6e80-df46-413c-aa3f-1646e28e8b06",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "837a7fe8-7926-46d2-b591-43f410a3dfca",
+			"key": "websiteUrl",
+			"value": "https://sqlverifier-50d286d70656.herokuapp.com/api/tasks"
+		},
+		{
+			"id": "b40b764f-eafe-4498-989f-142f7895a795",
+			"key": "accessToken",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwMzY4NzMyNCwiYXV0aCI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MDEwOTUzMjR9.3XQKXwit8lOBRzvfzQljne_YhF7InB9VpzsKAnYrXacutCVng2gFUs6lM0IPT9k-cKfuZV4OuM-7RWoqRqDa7g",
+			"type": "string"
+		},
+		{
+			"id": "5f24a5ac-ffb0-4c24-a9f8-225f6fac1895",
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"id": "65074b8a-685a-42f1-86d5-62cd383902f6",
+			"key": "adminToken",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTcwMzQ0NDE2NCwiYXV0aCI6IlJPTEVfQURNSU4iLCJpYXQiOjE3MDA4NTIxNjR9.f-ulY2Loo1sQ-pMOhh2r7gYr9tOo4eKX0SyWbSoCEd7tA1eWu5HZCjq85ajXzFqU6UCOUikykqvXLKq0oUuOUA",
+			"type": "string"
+		},
+		{
+			"id": "1d225024-8f96-4011-8bd9-19074ad2d54f",
+			"key": "user1031",
+			"value": "  \"login\": \"Daron.Prohaska94\",\n  \"firstName\": \"Gertrude\",\n  \"lastName\": \"Cary\",\n  \"email\": \"Tyree80@gmail.com\",\n  \"imageUrl\": \"string\",\n  \"activated\": true,\n  \"langKey\": \"en\",\n  \"createdBy\": \"string\",\n  \"createdDate\": \"2023-11-24T17:19:36.733Z\",\n  \"lastModifiedBy\": \"string\",\n  \"lastModifiedDate\": \"2023-11-24T17:19:36.733Z\",\n  \"authorities\": [\n    \"ROLE_USER_STUDENT\"]",
+			"type": "string"
+		},
+		{
+			"id": "96c55567-c4b7-42f9-87ad-98fe4c2f9b55",
+			"key": "user1032",
+			"value": "\"login\": \"Brent_Kreiger52\",\n  \"firstName\": \"Nathanial\",\n  \"lastName\": \"Rosa\",\n  \"email\": \"Colton.Ledner55@yahoo.com\",\n  \"imageUrl\": \"string\",\n  \"activated\": true,\n  \"langKey\": \"en\",\n  \"createdBy\": \"string\",\n  \"createdDate\": \"2023-11-24T17:19:36.733Z\",\n  \"lastModifiedBy\": \"string\",\n  \"lastModifiedDate\": \"2023-11-24T17:19:36.733Z\",\n  \"authorities\": [\n    \"ROLE_USER_STUDENT\"\n  ]",
+			"type": "string"
+		},
+		{
+			"id": "62df92a9-1b8e-4b76-a75d-7cb57f2e3b82",
+			"key": "user1034",
+			"value": "\"login\": \"Aaron53\",\n  \"firstName\": \"Luella\",\n  \"lastName\": \"Ludie\",\n  \"email\": \"Eino97@yahoo.com\",\n  \"imageUrl\": \"string\",\n  \"activated\": true,\n  \"langKey\": \"en\",\n  \"createdBy\": \"string\",\n  \"createdDate\": \"2023-11-24T17:19:36.733Z\",\n  \"lastModifiedBy\": \"string\",\n  \"lastModifiedDate\": \"2023-11-24T17:19:36.733Z\",\n  \"authorities\": [\n    \"ROLE_USER_STUDENT\"\n  ]",
+			"type": "string"
+		},
+		{
+			"id": "963a235e-2533-4aa2-ba05-11ac2c81dbbc",
+			"key": "user1037",
+			"value": "\"login\": \"Ramiro_Haag44\",\n  \"firstName\": \"Shea\",\n  \"lastName\": \"Bella\",\n  \"email\": \"Destiney_Greenholt@yahoo.com\",\n  \"imageUrl\": \"string\",\n  \"activated\": true,\n  \"langKey\": \"en\",\n  \"createdBy\": \"string\",\n  \"createdDate\": \"2023-11-24T17:19:36.733Z\",\n  \"lastModifiedBy\": \"string\",\n  \"lastModifiedDate\": \"2023-11-24T17:19:36.733Z\",\n  \"authorities\": [\n    \"ROLE_USER_STUDENT\"\n  ]",
+			"type": "string"
+		},
+		{
+			"id": "a788e2fd-404a-45bd-a5e0-60aebe8b06f5",
+			"key": "passwordTest",
+			"value": ""
+		},
+		{
+			"id": "ef13aa75-1647-4802-92b1-550e6f0489dd",
+			"key": "user1073",
+			"value": "\"login\": \"Mara24\",\n  \"firstName\": \"Juston\",\n  \"lastName\": \"Jamel\",\n  \"email\": \"Thad92@hotmail.com\",\n  \"imageUrl\": \"string\",\n  \"activated\": true,\n  \"langKey\": \"en\",\n  \"createdBy\": \"string\",\n  \"createdDate\": \"2023-11-24T17:19:36.733Z\",\n  \"lastModifiedBy\": \"string\",\n  \"lastModifiedDate\": \"2023-11-24T17:19:36.733Z\",\n  \"authorities\": [\n    \"ROLE_USER_ADMIN\"\n  ]",
+			"type": "string"
+		}
+	]
+}
