@@ -14,8 +14,8 @@ on:
   workflow_dispatch:
 
   # параметр для запуска коллекции каждую ночь в 00 часов
-  schedule:
-  - cron: "0 0 * * *"
+  #schedule:
+ # - cron: "0 0 * * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
